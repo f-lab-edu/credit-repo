@@ -1,0 +1,5 @@
+rootProject.name = 'credit'
+include 'credit-api'
+include 'credit-core'
+include 'credit-external-api'
+include 'credit-common'
