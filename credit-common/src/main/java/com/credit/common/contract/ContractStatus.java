@@ -1,4 +1,4 @@
-package com.credit.common.common.contract;
+package com.credit.common.contract;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package com.credit.common.contract.response;
 
-import com.credit.common.common.contract.ContractStatus;
+import com.credit.common.contract.ContractStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

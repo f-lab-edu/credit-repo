@@ -1,7 +1,6 @@
 package com.api.contoller;
 
 
-import com.credit.common.common.contract.ContractStatus;
 import com.credit.common.contract.request.ContractCreateRequest;
 import com.credit.common.contract.response.ContractCreateResponse;
 import jakarta.validation.Valid;
@@ -31,7 +30,7 @@ public class ContractController {
         // 임시 더미데이터 반환
         ContractCreateResponse response = ContractCreateResponse.builder()
                 .contractId("contractUUID")
-                .status(ContractStatus.PENDING_AGREEMENT)
+                .status(PENDING_AGREEMENT)
                 .shareUrl("https://app.com/c/contractUUID")
                 .build();
         return ResponseEntity.status(HttpStatus.CREATED).body(response);

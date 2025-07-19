@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @AllArgsConstructor
@@ -25,5 +25,5 @@ public class ContractCreateRequest {
     private BigDecimal principal; // 원금
 
     @NotNull(message = "상환일은 필수입니다.")
-    private LocalDateTime repaymentDate; // 상환일
+    private LocalDate repaymentDate; // 상환일
 }
