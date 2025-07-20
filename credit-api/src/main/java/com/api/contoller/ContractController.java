@@ -5,6 +5,7 @@ import com.credit.common.contract.request.ContractCreateRequest;
 import com.credit.common.contract.response.ContractAgreeResponse;
 import com.credit.common.contract.response.ContractCreateResponse;
 import com.credit.common.contract.response.ContractDetailResponse;
+import com.credit.common.contract.response.VirtualAccountResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -74,6 +75,42 @@ public class ContractController {
                 .repaymentDate(LocalDate.of(2025, 7, 30))
                 .status(ACTIVE)
                 .createdAt(LocalDateTime.of(2025, 7, 19, 18, 33, 25))
+                .build();
+
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * POST /{contractId}/deposit/virtual-account : 에스크로 원금 입금용 가상계좌 발급 요청 (채권자)
+     * Path Variable : contractId
+     * Response : VirtualAccountResponse (200)
+     */
+    @PostMapping("/{contractId}/deposit/virtual-account")
+    public ResponseEntity<VirtualAccountResponse> depositVirtualAccount(@PathVariable String contractId) {
+        System.out.println("계약 ID : " + contractId);
+
+        VirtualAccountResponse response = VirtualAccountResponse.builder()
+                .bankName("농협은행")
+                .accountNumber("123-456-789012")
+                .expiresAt(LocalDateTime.now().plusDays(7))
+                .build();
+
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     *  /{contractId}/repayment/virtual-account : 에스크로 상환 입금용 가상계좌 발급 요청 (채무자)
+     *  Path Variable : contractId
+     *  Response : VirtualAccountResponse (200)
+     */
+    @PostMapping("/{contractId}/repayment/virtual-account")
+    public ResponseEntity<VirtualAccountResponse> repaymentVirtualAccount(@PathVariable String contractId) {
+        System.out.println("계약 ID : " + contractId);
+
+        VirtualAccountResponse response = VirtualAccountResponse.builder()
+                .bankName("우리은행")
+                .accountNumber("987-654-321089")
+                .expiresAt(LocalDateTime.now().plusDays(1))
                 .build();
 
         return ResponseEntity.ok(response);
