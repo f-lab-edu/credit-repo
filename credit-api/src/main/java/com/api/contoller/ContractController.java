@@ -2,6 +2,7 @@ package com.api.contoller;
 
 
 import com.credit.common.contract.request.ContractCreateRequest;
+import com.credit.common.contract.response.ContractAgreeResponse;
 import com.credit.common.contract.response.ContractCreateResponse;
 import com.credit.common.contract.response.ContractDetailResponse;
 import jakarta.validation.Valid;
@@ -38,6 +39,22 @@ public class ContractController {
                 .shareUrl("https://app.com/c/contractUUID")
                 .build();
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    /**
+     * POST /{contractId}/agree : 계약 동의 (채무자)
+     * Path Variable : contractId
+     * Response : ContractAgreeResponse (200)
+     */
+    @PostMapping("/{contractId}/agree")
+    public ResponseEntity<ContractAgreeResponse> agreeContract(@PathVariable String contractId) {
+        System.out.println("계약 ID : " + contractId);
+
+        ContractAgreeResponse response = ContractAgreeResponse.builder()
+                .contractId(contractId)
+                .status(ACTIVE)
+                .build();
+        return ResponseEntity.ok(response);
     }
 
     /**
