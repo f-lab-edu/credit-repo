@@ -2,10 +2,8 @@ package com.api.contoller;
 
 
 import com.credit.common.contract.request.ContractCreateRequest;
-import com.credit.common.contract.response.ContractAgreeResponse;
-import com.credit.common.contract.response.ContractCreateResponse;
-import com.credit.common.contract.response.ContractDetailResponse;
-import com.credit.common.contract.response.VirtualAccountResponse;
+import com.credit.common.contract.request.RecoveryProgramCreateRequest;
+import com.credit.common.contract.response.*;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -115,4 +113,45 @@ public class ContractController {
 
         return ResponseEntity.ok(response);
     }
+
+    /**
+     * POST /{contractId}/recovery-programs : 신뢰 회복 프로그램 제안 (채권자)
+     * Request Body : RecoveryProgramCreateRequest
+     * Path Variable : contractId
+     * Response : RecoveryProgramCreateResponse (200)
+     */
+    @PostMapping("/{contractId}/recovery-programs")
+    public ResponseEntity<RecoveryProgramCreateResponse> createRecoveryProgram(
+            @PathVariable String contractId,
+            @Valid @RequestBody RecoveryProgramCreateRequest request
+            ) {
+        System.out.println("신뢰 회복 프로그램 제안 요청 - 계약 ID: " + contractId +
+                ", 상환 횟수: " + request.getRepaymentCount() +
+                ", 상환 주기: " + request.getRepaymentCycle().getDescription()); // Enum 값 사용
+
+        RecoveryProgramCreateResponse response = RecoveryProgramCreateResponse.builder()
+                .contractId(contractId)
+                .status(RECOVERY_PENDING_AGREEMENT)
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
+    /**
+     * POST /{contractId}/recovery-programs/agree : 신뢰 회복 프로그램 동의 (채무자)
+     * Path Variable : contractId
+     * Response : RecoveryProgramAgreeResponse (200)
+     */
+    @PostMapping("/{contractId}/recovery-programs/agree")
+    public ResponseEntity<RecoveryProgramAgreeResponse> agreeRecoveryProgram(@PathVariable String contractId) {
+        System.out.println("계약 ID : " + contractId);
+
+        RecoveryProgramAgreeResponse response = RecoveryProgramAgreeResponse.builder()
+                .contractId(contractId)
+                .status(RECOVERY_IN_PROGRESS)
+                .build();
+
+        return ResponseEntity.ok(response);
+    }
+
+
 }
