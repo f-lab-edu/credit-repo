@@ -1,15 +1,18 @@
-package com.api.contoller;
+package com.api.controller;
 
 
 import com.credit.common.contract.request.ContractCreateRequest;
 import com.credit.common.contract.request.RecoveryProgramCreateRequest;
 import com.credit.common.contract.response.*;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -153,5 +156,22 @@ public class ContractController {
         return ResponseEntity.ok(response);
     }
 
+    /**
+     * GET /{contractId}/proof : 법적 대응용 증거 자료(PDF)
+     * Path Variable : contractId
+     * Response : PDF 파일 스트림 (200)
+     */
+    @GetMapping("/{contractId}/proof")
+    public ResponseEntity<byte[]> proofDocument(@PathVariable String contractId) {
+        System.out.println("꼐약 ID : " + contractId);
+
+        String dummyPdfContent = "PDF content 계약 ID :" + contractId;
+        byte[] pdfContentBytes = dummyPdfContent.getBytes(StandardCharsets.UTF_8);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+
+        return new ResponseEntity<>(pdfContentBytes, headers, HttpStatus.OK);
+    }
 
 }
