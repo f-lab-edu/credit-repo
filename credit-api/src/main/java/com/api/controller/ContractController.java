@@ -5,6 +5,7 @@ import com.credit.common.contract.request.ContractCreateRequest;
 import com.credit.common.contract.request.RecoveryProgramCreateRequest;
 import com.credit.common.contract.response.*;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 
 import static com.credit.common.contract.ContractStatus.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/contracts")
 public class ContractController {
@@ -30,7 +32,7 @@ public class ContractController {
     @PostMapping
     public ResponseEntity<ContractCreateResponse> createContract(
             @Valid @RequestBody ContractCreateRequest request) {
-        System.out.println("채무자 휴대폰 : " + request.getBorrowerPhoneNumber() +
+        log.info("채무자 휴대폰 : " + request.getBorrowerPhoneNumber() +
                             ", 원금 : " + request.getPrincipal() +
                             ", 상환일 : " + request.getRepaymentDate());
 
@@ -50,7 +52,7 @@ public class ContractController {
      */
     @PostMapping("/{contractId}/agree")
     public ResponseEntity<ContractAgreeResponse> agreeContract(@PathVariable String contractId) {
-        System.out.println("계약 ID : " + contractId);
+        log.info("계약 ID : " + contractId);
 
         ContractAgreeResponse response = ContractAgreeResponse.builder()
                 .contractId(contractId)
@@ -66,7 +68,7 @@ public class ContractController {
      */
     @GetMapping("/{contractId}")
     public ResponseEntity<ContractDetailResponse> getContractDetail(@PathVariable String contractId) {
-        System.out.println("계약 ID : " + contractId);
+        log.info("계약 ID : " + contractId);
 
         ContractDetailResponse response = ContractDetailResponse.builder()
                 .contractId(contractId)
@@ -88,7 +90,7 @@ public class ContractController {
      */
     @PostMapping("/{contractId}/deposit/virtual-account")
     public ResponseEntity<VirtualAccountResponse> depositVirtualAccount(@PathVariable String contractId) {
-        System.out.println("계약 ID : " + contractId);
+        log.info("계약 ID : " + contractId);
 
         VirtualAccountResponse response = VirtualAccountResponse.builder()
                 .bankName("농협은행")
@@ -106,7 +108,7 @@ public class ContractController {
      */
     @PostMapping("/{contractId}/repayment/virtual-account")
     public ResponseEntity<VirtualAccountResponse> repaymentVirtualAccount(@PathVariable String contractId) {
-        System.out.println("계약 ID : " + contractId);
+        log.info("계약 ID : " + contractId);
 
         VirtualAccountResponse response = VirtualAccountResponse.builder()
                 .bankName("우리은행")
@@ -128,7 +130,7 @@ public class ContractController {
             @PathVariable String contractId,
             @Valid @RequestBody RecoveryProgramCreateRequest request
             ) {
-        System.out.println("신뢰 회복 프로그램 제안 요청 - 계약 ID: " + contractId +
+        log.info("신뢰 회복 프로그램 제안 요청 - 계약 ID: " + contractId +
                 ", 상환 횟수: " + request.getRepaymentCount() +
                 ", 상환 주기: " + request.getRepaymentCycle().getDescription()); // Enum 값 사용
 
@@ -146,7 +148,7 @@ public class ContractController {
      */
     @PostMapping("/{contractId}/recovery-programs/agree")
     public ResponseEntity<RecoveryProgramAgreeResponse> agreeRecoveryProgram(@PathVariable String contractId) {
-        System.out.println("계약 ID : " + contractId);
+        log.info("계약 ID : " + contractId);
 
         RecoveryProgramAgreeResponse response = RecoveryProgramAgreeResponse.builder()
                 .contractId(contractId)
@@ -163,7 +165,7 @@ public class ContractController {
      */
     @GetMapping("/{contractId}/proof")
     public ResponseEntity<byte[]> proofDocument(@PathVariable String contractId) {
-        System.out.println("꼐약 ID : " + contractId);
+        log.info("꼐약 ID : " + contractId);
 
         String dummyPdfContent = "PDF content 계약 ID :" + contractId;
         byte[] pdfContentBytes = dummyPdfContent.getBytes(StandardCharsets.UTF_8);
