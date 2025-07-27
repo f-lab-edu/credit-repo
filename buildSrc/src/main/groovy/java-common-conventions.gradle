@@ -1,0 +1,31 @@
+plugins {
+    id 'java'
+}
+
+group = 'com'
+version = '0.0.1-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.10.2'
+
+    //lombok
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+/**
+ * 아래 설정은 Java17을 사용하도록 빌드 툴체인을 정의
+ */
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
