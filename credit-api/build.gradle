@@ -1,19 +1,12 @@
 plugins {
-	id 'java-common-conventions'
-
-	id 'org.springframework.boot'
-	id 'io.spring.dependency-management'
+	id 'spring-boot-conventions'
 }
 
 
-dependencies {
+dependencies { // ➎ 이 모듈이 의존하는 다른 모듈이나 외부 라이브러리들을 정의합니다.
 	implementation project(':credit-core')
 	implementation project(':credit-external-api')
 	implementation project(':credit-common')
-
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 	testImplementation 'com.h2database:h2'
 }

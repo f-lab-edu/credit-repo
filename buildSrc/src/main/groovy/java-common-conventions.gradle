@@ -1,15 +1,18 @@
-plugins {
-    id 'java'
+/**
+ * 이 파일은 사용자 정의 컨벤션 플러그인이다. 이 플러그인은 모든 Java 기반 모듈에 공통적으로 적용될 수 있는 설정들을 묶어놓은 것입니다.
+ */
+plugins { // ➊ 이 컨벤션 플러그인을 적용하는 모듈에 어떤 플러그인들을 적용할지 정의합니다.
+    id 'java' // ➋ 이 컨벤션 플러그인을 적용하는 모든 모듈에 Java 개발 기능을 제공하는 'java' 플러그인을 적용합니다.
 }
 
 group = 'com'
 version = '0.0.1-SNAPSHOT'
 
-repositories {
+repositories { // ➎ 이 플러그인을 적용하는 모든 모듈이 의존성을 찾을 저장소를 정의합니다.
     mavenCentral()
 }
 
-dependencies {
+dependencies { // ➐ 이 플러그인을 적용하는 모든 모듈에 공통적으로 필요한 의존성을 정의합니다.
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.10.2'
 
     //lombok
@@ -17,15 +20,15 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
 }
 
-tasks.named('test') {
+tasks.named('test') {// ⓬ 'test'라는 이름의 태스크(여기서는 테스트 실행 태스크)를 설정합니다.
     useJUnitPlatform()
 }
 
 /**
  * 아래 설정은 Java17을 사용하도록 빌드 툴체인을 정의
  */
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+java { // ⓮ Java 관련 설정을 정의하는 블록입니다.
+    toolchain { // ⓯ 빌드에 사용할 Java 개발 키트(JDK) 버전을 설정합니다.
+        languageVersion = JavaLanguageVersion.of(17) // ⓰ 프로젝트의 소스 코드 및 빌드에 Java 17을 사용하도록 지정합니다.
     }
 }
