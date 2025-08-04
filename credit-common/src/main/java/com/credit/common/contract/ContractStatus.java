@@ -3,6 +3,9 @@ package com.credit.common.contract;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Getter
 @RequiredArgsConstructor
 public enum ContractStatus {
@@ -15,4 +18,13 @@ public enum ContractStatus {
     RECOVERY_IN_PROGRESS("신뢰 회복 프로그램 진행 중");
     
     private final String description;
+
+    //비지니스 로직에서 활성으로 간주하는 상태들의 리스트를 제공하는 정적 메서드
+    public static List<ContractStatus> getActiveStatuses() {
+        return Arrays.asList(
+                PENDING_AGREEMENT,
+                ACTIVE,
+                RECOVERY_IN_PROGRESS
+        );
+    }
 }
