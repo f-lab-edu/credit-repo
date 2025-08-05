@@ -2,14 +2,14 @@
  * 플러그인 버전 관리를 중앙 집중화
  * Spring Boot 및 dependency-management 플러그인 버전을 여기에 명시하여 각 서브 모듈의 build.gradle에서는 버전을 생략
  */
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        mavenCentral()
+pluginManagement { // ➊ Gradle이 사용할 플러그인들의 버전과 저장소를 중앙에서 관리하는 블록입니다.
+    repositories { // ➋ 플러그인을 다운로드할 저장소를 지정합니다.
+        gradlePluginPortal()  // ➌ Gradle 공식 플러그인 저장소입니다. 대부분의 플러그인을 여기서 찾을 수 있습니다.
+        mavenCentral() // ➍ Maven 중앙 저장소입니다. 다양한 라이브러리와 플러그인이 이곳에 있습니다.
     }
 
-    plugins {
-        id 'org.springframework.boot' version '3.5.3' // 이 플러그인은 Spring Boot 애플리케이션의 최상위 빌드에 필요한 기능들을 제공
+    plugins { // ➎ 프로젝트에서 사용될 플러그인들의 ID와 버전을 정의합니다.
+        id 'org.springframework.boot' version '3.5.3' // ➏ Spring Boot 플러그인 ID와 버전을 명시합니다. 이 정보를 통해 Gradle은 Spring Boot 관련 기능을 사용합니다.
         id 'io.spring.dependency-management' version '1.1.7'
     }
 }

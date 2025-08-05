@@ -1,4 +1,4 @@
-package com.api.controller;
+package com.api.controller.contract;
 
 
 import com.credit.common.contract.request.ContractCreateRequest;
