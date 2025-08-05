@@ -8,11 +8,12 @@ import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
 public class InMemoryContractRepository implements ContractRepository {
 
-    private final Map<String, Contract> store = new HashMap<>();
+    private final Map<String, Contract> store = new ConcurrentHashMap<>();
 
     @Override
     public Optional<Contract> findById(String id) {

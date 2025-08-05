@@ -15,7 +15,6 @@ import java.util.Optional;
 public class ContractService {
     private final ContractRepository contractRepository;
 
-    @Transactional
     public Contract createContract(ContractCreateRequest request) {
         Optional<Contract> checkDuplicateContract = contractRepository.findByBorrowerPhoneNumberAndPrincipalAndRepaymentDateAndStatusIn(
                 request.getBorrowerPhoneNumber(),
