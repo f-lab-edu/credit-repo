@@ -2,6 +2,7 @@ package com.creditcore.entity;
 
 import com.credit.common.contract.ContractStatus;
 import com.credit.common.contract.request.ContractCreateRequest;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,19 +13,34 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Entity
+@Table(name = "contract")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Builder
 public class Contract {
 
+    @Id
+    @Column(name = "contract_id", nullable = false, unique = true)
     private String id;
+
+    @Column(name = "borrower_phone_number", nullable = false)
     private String borrowerPhoneNumber;
+
+    @Column(name = "principal", nullable = false)
     private BigDecimal principal;
+
+    @Column(name = "repayment_date", nullable = false)
     private LocalDate repaymentDate;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "contract_status", nullable = false)
     private ContractStatus status;
 
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
     // 정적 빌더 패턴
