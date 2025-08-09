@@ -2,6 +2,10 @@ plugins {
     id 'spring-boot-conventions'
 }
 
+dependencies {
+    implementation project(':credit-common')
+}
+
 bootJar {
     enabled = false
 }
