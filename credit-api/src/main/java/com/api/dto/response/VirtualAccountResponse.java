@@ -1,4 +1,4 @@
-package com.credit.common.contract.response;
+package com.api.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

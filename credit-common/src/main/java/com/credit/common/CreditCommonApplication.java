@@ -1,4 +1,4 @@
-package com.credit.common.contract;
+package com.credit.common;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

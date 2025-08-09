@@ -1,6 +1,6 @@
-package com.credit.common.contract.response;
+package com.api.dto.response;
 
-import com.credit.common.contract.ContractStatus;
+import com.creditcore.enums.contract.ContractStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

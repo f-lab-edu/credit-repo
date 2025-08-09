@@ -1,4 +1,4 @@
-package com.credit.common.recover;
+package com.creditcore.enums.recover;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
