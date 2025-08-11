@@ -1,9 +1,14 @@
 package com.creditcore.service.contract;
 
-import com.credit.common.contract.ContractStatus;
-import com.credit.common.contract.request.ContractCreateRequest;
+import com.creditcore.dto.request.contract.ContractCreateRequest;
+import com.creditcore.dto.response.contract.ContractAgreeResponse;
+import com.creditcore.dto.response.contract.ContractCreateResponse;
+import com.creditcore.dto.response.contract.ContractDetailResponse;
+import com.creditcore.entity.User;
+import com.creditcore.enums.contract.ContractStatus;
 import com.creditcore.entity.Contract;
 import com.creditcore.repository.contract.ContractRepository;
+import com.creditcore.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,8 +19,16 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ContractService {
     private final ContractRepository contractRepository;
+    private final UserRepository userRepository;
 
-    public Contract createContract(ContractCreateRequest request) {
+    public ContractCreateResponse createContract(ContractCreateRequest request) {
+
+        User lender = userRepository.findById(request.getLenderId())
+                .orElseThrow(() -> new IllegalArgumentException("채권자를 찾을 수 없습니다."));
+        User borrower = userRepository.findById(request.getBorrowerId())
+                .orElseThrow(() -> new IllegalArgumentException("채무자를 찾을 수 없습니다."));
+
+
         Optional<Contract> checkDuplicateContract = contractRepository.findByBorrowerPhoneNumberAndPrincipalAndRepaymentDateAndStatusIn(
                 request.getBorrowerPhoneNumber(),
                 request.getPrincipal(),
@@ -27,20 +40,25 @@ public class ContractService {
             throw new IllegalArgumentException("중복된 계약이 존재합니다.");
         }
 
-        Contract contract = Contract.create(request);
+        Contract contract = Contract.create(
+                lender.getId(),
+                borrower.getId(),
+                request);
+        Contract saved = contractRepository.save(contract);
 
-        // 추후 DTO 변환해서 반환, 현재까지는 엔티티 반환 유지
-        return contractRepository.save(contract);
+        return ContractCreateResponse.of(saved);
     }
 
     @Transactional(readOnly = true)
-    public Contract getContractDetail(String contractId) {
-        return contractRepository.findById(contractId)
-                .orElseThrow(()-> new IllegalArgumentException("계약을 찾을 수 없습니다"));
+    public ContractDetailResponse getContractDetail(String contractId) {
+        Contract contract = contractRepository.findById(contractId)
+                .orElseThrow(() -> new IllegalArgumentException("계약을 찾을 수 없습니다"));
+
+        return ContractDetailResponse.of(contract);
     }
 
     @Transactional
-    public Contract agreeContract(String contractId) {
+    public ContractAgreeResponse agreeContract(String contractId) {
         Contract contract = contractRepository.findById(contractId)
                 .orElseThrow(() -> new IllegalArgumentException("계약을 찾을 수 없습니다."));
 
@@ -49,7 +67,36 @@ public class ContractService {
         }
 
         contract.updateStatus(ContractStatus.ACTIVE);
+        Contract saved = contractRepository.save(contract);
 
-        return contractRepository.save(contract);
+        return ContractAgreeResponse.of(saved);
+    }
+
+    @Transactional
+    public void cancelContract(String contractId) {
+        Contract contract = contractRepository.findById(contractId)
+                .orElseThrow(() -> new IllegalArgumentException("계약을 찾을 수 없습니다."));
+
+        if (contract.getStatus() != ContractStatus.PENDING_AGREEMENT &&
+                contract.getStatus() != ContractStatus.ACTIVE) {
+            throw new IllegalArgumentException("해당 상태(" + contract.getStatus() + ")에서는 취소할 수 없습니다.");
+        }
+
+        contract.updateStatus(ContractStatus.CANCELED);
+        contractRepository.save(contract);
+    }
+
+    @Transactional
+    public void completeContract(String contractId) {
+        Contract contract = contractRepository.findById(contractId)
+                .orElseThrow(() -> new IllegalArgumentException("계약을 찾을 수 없습니다."));
+
+        if (contract.getStatus() != ContractStatus.ACTIVE &&
+                contract.getStatus() != ContractStatus.RECOVERY_IN_PROGRESS) {
+            throw new IllegalArgumentException("해당 상태(" + contract.getStatus() + ")에서는 완료할 수 없습니다.");
+        }
+
+        contract.updateStatus(ContractStatus.COMPLETED);
+        contractRepository.save(contract);
     }
 }

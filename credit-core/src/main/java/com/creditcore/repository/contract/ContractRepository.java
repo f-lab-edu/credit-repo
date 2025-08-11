@@ -1,6 +1,6 @@
 package com.creditcore.repository.contract;
 
-import com.credit.common.contract.ContractStatus;
+import com.creditcore.enums.contract.ContractStatus;
 import com.creditcore.entity.Contract;
 import org.springframework.data.jpa.repository.JpaRepository;
 
