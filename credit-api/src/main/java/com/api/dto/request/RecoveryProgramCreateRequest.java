@@ -1,4 +1,4 @@
-package com.creditcore.dto.request.recovery;
+package com.api.dto.request;
 
 import com.creditcore.enums.contract.RepaymentCycle;
 import jakarta.validation.constraints.Min;

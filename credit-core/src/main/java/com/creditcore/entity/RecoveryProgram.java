@@ -9,7 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Table(name = "recovery_program")
@@ -38,23 +37,35 @@ public class RecoveryProgram {
     private RecoverProgramStatus status;
 
     @Column(name = "proposed_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
+    private LocalDateTime proposedAt;
 
+    @Column(name = "approved_at")
+    private LocalDateTime approvedAt;
+
+    @Column(name = "ended_at")
+    private LocalDateTime endedAt;
 
     //정적 메서드
     public static RecoveryProgram create(String contractId, Integer repaymentCount, RepaymentCycle repaymentCycle) {
         return RecoveryProgram.builder()
-                .id(UUID.randomUUID().toString())
+                .id(java.util.UUID.randomUUID().toString())
                 .contractId(contractId)
                 .repaymentCount(repaymentCount)
                 .repaymentCycle(repaymentCycle)
                 .status(RecoverProgramStatus.PENDING) // 초기 상태
-                .createdAt(LocalDateTime.now())
+                .proposedAt(LocalDateTime.now())
                 .build();
     }
 
     // 상태 변경 메서드
     public void updateStatus(RecoverProgramStatus newStatus) {
         this.status = newStatus;
+        if (newStatus == RecoverProgramStatus.APPROVED) {
+            this.approvedAt = LocalDateTime.now();
+        } else if (newStatus == RecoverProgramStatus.COMPLETED ||
+                newStatus == RecoverProgramStatus.REJECTED ||
+                newStatus == RecoverProgramStatus.CANCELLED) {
+            this.endedAt = LocalDateTime.now();
+        }
     }
 }

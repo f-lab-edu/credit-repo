@@ -1,4 +1,4 @@
-package com.creditcore.dto.response.recovery;
+package com.api.dto.response;
 
 import com.creditcore.enums.contract.ContractStatus;
 import lombok.AllArgsConstructor;
@@ -14,11 +14,4 @@ public class RecoveryProgramCreateResponse {
 
     private String contractId;
     private ContractStatus status;
-
-    public static RecoveryProgramCreateResponse from(String contractId, ContractStatus status) {
-        return RecoveryProgramCreateResponse.builder()
-                .contractId(contractId)
-                .status(status)
-                .build();
-    }
 }

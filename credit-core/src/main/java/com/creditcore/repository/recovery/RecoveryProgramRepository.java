@@ -1,6 +1,6 @@
 package com.creditcore.repository.recovery;
 
-import com.creditcore.enums.recover.RecoverProgramStatus;
+import com.credit.common.recover.RecoverProgramStatus;
 import com.creditcore.entity.RecoveryProgram;
 import org.springframework.data.jpa.repository.JpaRepository;
 
