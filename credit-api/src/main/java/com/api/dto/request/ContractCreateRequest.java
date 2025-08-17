@@ -1,4 +1,4 @@
-package com.credit.common.contract.request;
+package com.api.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

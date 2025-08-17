@@ -1,4 +1,4 @@
-package com.credit.common.contract;
+package com.creditcore.enums.contract;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

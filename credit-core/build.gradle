@@ -5,9 +5,15 @@ plugins {
 
 
 dependencies {
+    implementation project(':credit-external-api')
     implementation project(':credit-common')
 
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     runtimeOnly 'com.mysql:mysql-connector-j'
 
+}
+
+bootJar {
+    enabled = false
 }

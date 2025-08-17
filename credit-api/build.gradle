@@ -3,10 +3,13 @@ plugins {
 }
 
 
-dependencies { // ➎ 이 모듈이 의존하는 다른 모듈이나 외부 라이브러리들을 정의합니다.
+dependencies {
 	implementation project(':credit-core')
-	implementation project(':credit-external-api')
 	implementation project(':credit-common')
 
 	testImplementation 'com.h2database:h2'
+}
+
+bootJar {
+	mainClass = 'com.credit.CreditApiApplication'
 }

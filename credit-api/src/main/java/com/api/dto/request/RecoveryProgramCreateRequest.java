@@ -1,6 +1,6 @@
-package com.credit.common.contract.request;
+package com.api.dto.request;
 
-import com.credit.common.contract.RepaymentCycle;
+import com.creditcore.enums.contract.RepaymentCycle;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
