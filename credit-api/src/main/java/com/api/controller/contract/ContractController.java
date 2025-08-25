@@ -6,6 +6,7 @@ import com.creditcore.dto.response.contract.ContractAgreeResponse;
 import com.creditcore.dto.response.contract.ContractCreateResponse;
 import com.creditcore.dto.response.contract.ContractDetailResponse;
 import com.creditcore.service.contract.ContractService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +28,7 @@ public class ContractController {
      */
     @PostMapping
     public ResponseEntity<ContractCreateResponse> createContract(
-            @Valid @RequestBody ContractCreateRequest request) {
+            @Valid @RequestBody ContractCreateRequest request){
         log.info("채무자 휴대폰 : " + request.getBorrowerPhoneNumber() +
                             ", 원금 : " + request.getPrincipal() +
                             ", 상환일 : " + request.getRepaymentDate());

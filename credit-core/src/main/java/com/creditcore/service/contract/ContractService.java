@@ -9,7 +9,11 @@ import com.creditcore.enums.contract.ContractStatus;
 import com.creditcore.entity.Contract;
 import com.creditcore.repository.contract.ContractRepository;
 import com.creditcore.repository.user.UserRepository;
+import com.creditexternalapi.toss.TossPaymentsClient;
+import com.creditexternalapi.toss.dto.request.VirtualAccountRequest;
+import com.creditexternalapi.toss.dto.response.VirtualAccountResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,11 +21,14 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ContractService {
     private final ContractRepository contractRepository;
     private final UserRepository userRepository;
+    private final TossPaymentsClient tossPaymentsClient;
 
-    public ContractCreateResponse createContract(ContractCreateRequest request) {
+    @Transactional
+    public ContractCreateResponse createContract(ContractCreateRequest request){
 
         User lender = userRepository.findById(request.getLenderId())
                 .orElseThrow(() -> new IllegalArgumentException("채권자를 찾을 수 없습니다."));
@@ -40,13 +47,13 @@ public class ContractService {
             throw new IllegalArgumentException("중복된 계약이 존재합니다.");
         }
 
-        Contract contract = Contract.create(
-                lender.getId(),
-                borrower.getId(),
-                request);
+        Contract contract = Contract.create(lender.getId(), borrower.getId(), request);
         Contract saved = contractRepository.save(contract);
 
-        return ContractCreateResponse.of(saved);
+        VirtualAccountRequest vaRequest = VirtualAccountRequest.ofBorrower(borrower.getName(), saved.getId(), request.getPrincipal().intValue());
+        VirtualAccountResponse vaResponse = tossPaymentsClient.createVirtualAccount(vaRequest);
+
+        return ContractCreateResponse.of(saved, vaResponse);
     }
 
     @Transactional(readOnly = true)
