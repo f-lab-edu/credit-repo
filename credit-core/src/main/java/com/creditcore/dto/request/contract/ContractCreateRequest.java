@@ -1,4 +1,4 @@
-package com.api.dto.request;
+package com.creditcore.dto.request.contract;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -16,6 +16,12 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Builder
 public class ContractCreateRequest {
+
+    @NotBlank
+    private String lenderId;
+
+    @NotBlank
+    private String borrowerId;
 
     @NotBlank(message = "채무자 휴대폰 번호는 필수입니다.")
     @Pattern(regexp = "^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$", message = "유효하지 않은 휴대폰 번호 형식입니다.")

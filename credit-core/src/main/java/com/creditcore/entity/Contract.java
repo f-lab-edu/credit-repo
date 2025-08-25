@@ -1,7 +1,7 @@
 package com.creditcore.entity;
 
-import com.credit.common.contract.ContractStatus;
-import com.credit.common.contract.request.ContractCreateRequest;
+import com.creditcore.dto.request.contract.ContractCreateRequest;
+import com.creditcore.enums.contract.ContractStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,6 +25,12 @@ public class Contract {
     @Column(name = "contract_id", nullable = false, unique = true)
     private String id;
 
+    @Column(name = "lender_id", nullable = false)
+    private String lenderId;
+
+    @Column(name = "borrower_id", nullable = false)
+    private String borrowerId;
+
     @Column(name = "borrower_phone_number", nullable = false)
     private String borrowerPhoneNumber;
 
@@ -44,9 +50,11 @@ public class Contract {
     private LocalDateTime updatedAt;
 
     // 정적 빌더 패턴
-    public static Contract create(ContractCreateRequest request) {
+    public static Contract create(String lenderId, String borrowerId, ContractCreateRequest request) {
         return Contract.builder()
                 .id(UUID.randomUUID().toString())
+                .lenderId(lenderId)
+                .borrowerId(borrowerId)
                 .borrowerPhoneNumber(request.getBorrowerPhoneNumber())
                 .principal(request.getPrincipal())
                 .repaymentDate(request.getRepaymentDate())
