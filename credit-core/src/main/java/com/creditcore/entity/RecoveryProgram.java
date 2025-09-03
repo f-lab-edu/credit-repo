@@ -1,7 +1,7 @@
 package com.creditcore.entity;
 
-import com.credit.common.contract.RepaymentCycle;
-import com.credit.common.recover.RecoverProgramStatus;
+import com.creditcore.enums.contract.RepaymentCycle;
+import com.creditcore.enums.recover.RecoverProgramStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
