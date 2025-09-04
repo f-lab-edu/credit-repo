@@ -6,6 +6,7 @@ import com.creditcore.enums.contract.ContractStatus;
 import com.creditcore.enums.repayment.RepaymentStatus;
 import com.creditcore.repository.contract.ContractRepository;
 import com.creditcore.repository.repayment.RepaymentRepository;
+import com.creditcore.service.payout.MockPayoutService;
 import com.creditexternalapi.toss.dto.request.TossWebhookPayload;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ public class WebhookService {
 
     private final ContractRepository contractRepository;
     private final RepaymentRepository repaymentRepository;
+    private final MockPayoutService mockPayoutService;
 
     @Transactional
     public void handleVirtualAccountEvent(TossWebhookPayload payload) {
@@ -67,6 +69,8 @@ public class WebhookService {
                 repayOrderId
         );
         repaymentRepository.save(repayment);
+
+        mockPayoutService.payoutToBorrowerOnLoanDeposit(contract);
     }
 
     private void handleRepaymentDeposit(String repaymentOrderId, String txKey) {
@@ -86,5 +90,7 @@ public class WebhookService {
             contract.updateStatus(ContractStatus.COMPLETED);
             contractRepository.save(contract);
         }
+
+        mockPayoutService.payoutToLenderOnRepayment(contract);
     }
 }

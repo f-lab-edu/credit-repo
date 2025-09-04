@@ -35,6 +35,12 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "bank_code", nullable = false)
+    private String bankCode;
+
+    @Column(name = "account_number", nullable = false)
+    private String accountNumber;
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 

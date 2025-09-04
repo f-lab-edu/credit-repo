@@ -21,10 +21,10 @@ public class UserService {
         }
 
         User user = User.create(
-                request.getEmail(),
-                request.getPassword(),
                 request.getName(),
-                request.getPhoneNumber()
+                request.getPhoneNumber(),
+                request.getEmail(),
+                request.getPassword()
         );
 
         User savedUser = userRepository.save(user);
