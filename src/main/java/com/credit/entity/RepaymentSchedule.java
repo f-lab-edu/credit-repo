@@ -34,6 +34,19 @@ public class RepaymentSchedule {
     @Column(nullable = false)
     private RepaymentScheduleStatus status;
 
+    // 가상계좌 정보 (채권자가 계약을 확정하면 채워짐)
+    @Column(name = "virtual_account_number")
+    private String virtualAccountNumber;
+
+    @Column(name = "bank_code")
+    private String bankCode;
+
+    @Column(name = "account_holder_name")
+    private String accountHolderName;
+
+    @Column(name = "account_due_date")
+    private String accountDueDate;
+
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
@@ -52,8 +65,21 @@ public class RepaymentSchedule {
                 .build();
     }
 
+    public void assignVirtualAccount(String accountNumber, String bankCode,
+                                     String accountHolderName, String accountDueDate) {
+        this.virtualAccountNumber = accountNumber;
+        this.bankCode = bankCode;
+        this.accountHolderName = accountHolderName;
+        this.accountDueDate = accountDueDate;
+        this.updatedAt = LocalDateTime.now();
+    }
+
     public void updateStatus(RepaymentScheduleStatus newStatus) {
         this.status = newStatus;
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public boolean isVirtualAccountIssued() {
+        return this.virtualAccountNumber != null;
     }
 }

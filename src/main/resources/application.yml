@@ -17,3 +17,5 @@ toss:
   secret-key: test_sk_DnyRpQWGrNLZxykMjkqy3Kwv1M9E
   virtual-account:
     base-url: https://api.tosspayments.com/v1/virtual-accounts
+    bank: "088"
+    valid-hours: 720

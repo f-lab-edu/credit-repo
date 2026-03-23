@@ -2,6 +2,7 @@ package com.credit.controller;
 
 import com.credit.dto.request.ContractCreateRequest;
 import com.credit.dto.response.ContractResponse;
+import com.credit.dto.response.VirtualAccountIssuedResponse;
 import com.credit.service.ContractService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,12 @@ public class ContractController {
     public ResponseEntity<ContractResponse> approveContract(@PathVariable String contractId) {
         log.info("계약 승인 요청 - contractId: {}", contractId);
         return ResponseEntity.ok(contractService.approveContract(contractId));
+    }
+
+    @PostMapping("/{contractId}/confirm")
+    public ResponseEntity<VirtualAccountIssuedResponse> confirmContract(@PathVariable String contractId) {
+        log.info("계약 확정 요청 - contractId: {}", contractId);
+        return ResponseEntity.ok(contractService.confirmContract(contractId));
     }
 
     @GetMapping("/{contractId}")
